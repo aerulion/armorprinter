@@ -1,0 +1,26 @@
+name: ArmorPrinter
+description: ArmorPrinter.
+main: net.aerulion.armorprinter.Main
+version: '1.1'
+author: aerulion
+api-version: '1.16'
+commands:
+  armorprinter:
+    description: ArmorPrinter GUI öffnen.
+    aliases: ap
+  printrandomarmor:
+    description: Random gefaerbte Ruestung ins Inventar legen.
+    aliases: pra
+  printperson:
+    description: Erstellt ein ArmorStand-Abbild des angegeben Spielers.
+    aliases: pp
+permissions:
+  armorprinter.armorprinter:
+    description: Erlaubt dem Spieler /armorprinter zu nutzen.
+    default: op
+  armorprinter.printrandomarmor:
+    description: Erlaubt dem Spieler /printrandomarmor zu nutzen.
+    default: op
+  armorprinter.printperson:
+    description: Erlaubt dem Spieler /printperson zu nutzen.
+    default: op
