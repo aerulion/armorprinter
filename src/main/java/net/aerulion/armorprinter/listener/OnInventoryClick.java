@@ -12,51 +12,52 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class OnInventoryClick implements Listener {
 
-    @EventHandler
-    public void OnInvClick(InventoryClickEvent e) {
-        if (e.getWhoClicked() instanceof Player) {
-            if (e.getView().getTitle() != null && e.getCurrentItem() != null && e.getCurrentItem().getType() != Material.AIR) {
-                if (e.getView().getTitle().equals(" §8§m+---§2§l§o  Armor§8-§2§l§oPrinter  §8§m---+")) {
-                    if (Utils.dyeMaterialColors.keySet().contains(e.getCurrentItem().getType())) {
-                        e.setCancelled(true);
-                        DyeColor color = Utils.dyeMaterialColors.get(e.getCurrentItem().getType());
-                        Color col = Main.colorCache.get(e.getWhoClicked().getName());
-                        if (col == null) {
-                            col = color.getColor();
-                        } else {
-                            col = col.mixDyes(color);
-                        }
-                        Main.colorCache.put(e.getWhoClicked().getName(), col);
-                        Utils.UpdateColorInventory((Player) e.getWhoClicked());
-                        ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ENTITY_BOAT_PADDLE_WATER, 1.0F, 1.5F);
-
-                        return;
-                    }
-
-                    if (e.getCurrentItem().getType().equals(Material.LEATHER_HELMET) || e.getCurrentItem().getType().equals(Material.LEATHER_CHESTPLATE) || e.getCurrentItem().getType().equals(Material.LEATHER_LEGGINGS) || e.getCurrentItem().getType().equals(Material.LEATHER_BOOTS)) {
-                        e.setCancelled(true);
-                        ItemStack is = new ItemStack(e.getCurrentItem());
-                        ItemMeta mis = is.getItemMeta();
-                        mis.setDisplayName(null);
-                        is.setItemMeta(mis);
-                        e.getWhoClicked().getInventory().addItem(is);
-                        ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.ENTITY_CHICKEN_EGG, 1.0F, 1.0F);
-                        return;
-                    }
-
-                    if (e.getCurrentItem().getType().equals(Material.BARRIER)) {
-                        e.setCancelled(true);
-                        Main.colorCache.put(e.getWhoClicked().getName(), null);
-                        Utils.UpdateColorInventory((Player) e.getWhoClicked());
-                        ((Player) e.getWhoClicked()).playSound(e.getWhoClicked().getLocation(), Sound.UI_BUTTON_CLICK, 1.0F, 1.0F);
-                        return;
-                    }
-                }
-            }
-
+  @EventHandler
+  public void OnInvClick(@NotNull InventoryClickEvent event) {
+    if (event.getWhoClicked() instanceof Player player && event.getCurrentItem() != null
+        && event.getCurrentItem().getType() != Material.AIR && event.getView().getTitle()
+        .equals(" §8§m+---§2§l§o  Armor§8-§2§l§oPrinter  §8§m---+")) {
+      if (Utils.dyeMaterialColors.containsKey(event.getCurrentItem().getType())) {
+        event.setCancelled(true);
+        DyeColor dyeColor = Utils.dyeMaterialColors.get(event.getCurrentItem().getType());
+        Color color = Main.colorCache.get(player.getName());
+        if (color == null) {
+          color = dyeColor.getColor();
+        } else {
+          color = color.mixDyes(dyeColor);
         }
+        Main.colorCache.put(player.getName(), color);
+        Utils.UpdateColorInventory(player);
+        player.playSound(player.getLocation(), Sound.ENTITY_BOAT_PADDLE_WATER, 1.0F, 1.5F);
+
+        return;
+      }
+
+      if (event.getCurrentItem().getType().equals(Material.LEATHER_HELMET) || event.getCurrentItem()
+          .getType().equals(Material.LEATHER_CHESTPLATE) || event.getCurrentItem().getType()
+          .equals(Material.LEATHER_LEGGINGS) || event.getCurrentItem().getType()
+          .equals(Material.LEATHER_BOOTS)) {
+        event.setCancelled(true);
+        @Nullable ItemStack is = new ItemStack(event.getCurrentItem());
+        ItemMeta mis = is.getItemMeta();
+        mis.setDisplayName(null);
+        is.setItemMeta(mis);
+        player.getInventory().addItem(is);
+        player.playSound(player.getLocation(), Sound.ENTITY_CHICKEN_EGG, 1.0F, 1.0F);
+        return;
+      }
+
+      if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
+        event.setCancelled(true);
+        Main.colorCache.put(player.getName(), null);
+        Utils.UpdateColorInventory(player);
+        player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0F, 1.0F);
+      }
     }
+  }
 }
