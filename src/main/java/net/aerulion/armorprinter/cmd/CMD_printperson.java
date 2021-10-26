@@ -57,7 +57,7 @@ public class CMD_printperson implements CommandExecutor, TabCompleter {
     }
 
     @NotNull ArmorStand armorStand = Utils.summonArmorStand(player);
-    Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, bukkitTask -> {
+    Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
       try {
         Utils.equipPrintedArmorStand(armorStand, playerName, quality);
         player.sendMessage(

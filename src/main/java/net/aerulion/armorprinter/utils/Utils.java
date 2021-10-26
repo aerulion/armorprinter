@@ -180,10 +180,12 @@ public class Utils {
     skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(playerName));
     skull.setItemMeta(skullMeta);
     ItemStack @NotNull [] items = ColorUtils.getItems(playerName, quality);
-    armorStand.getEquipment().setHelmet(skull);
-    armorStand.getEquipment().setChestplate(items[0]);
-    armorStand.getEquipment().setLeggings(items[1]);
-    armorStand.getEquipment().setBoots(items[2]);
-    armorStand.setCustomName(playerName);
+    Bukkit.getScheduler().runTask(Main.plugin, () -> {
+      armorStand.getEquipment().setHelmet(skull);
+      armorStand.getEquipment().setChestplate(items[0]);
+      armorStand.getEquipment().setLeggings(items[1]);
+      armorStand.getEquipment().setBoots(items[2]);
+      armorStand.setCustomName(playerName);
+    });
   }
 }
