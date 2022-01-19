@@ -18,13 +18,13 @@ import org.jetbrains.annotations.Nullable;
 public class OnInventoryClick implements Listener {
 
   @EventHandler
-  public void OnInvClick(@NotNull InventoryClickEvent event) {
+  public void OnInvClick(final @NotNull InventoryClickEvent event) {
     if (event.getWhoClicked() instanceof Player player && event.getCurrentItem() != null
         && event.getCurrentItem().getType() != Material.AIR && event.getView().getTitle()
         .equals(" §8§m+---§2§l§o  Armor§8-§2§l§oPrinter  §8§m---+")) {
       if (Utils.dyeMaterialColors.containsKey(event.getCurrentItem().getType())) {
         event.setCancelled(true);
-        DyeColor dyeColor = Utils.dyeMaterialColors.get(event.getCurrentItem().getType());
+        final DyeColor dyeColor = Utils.dyeMaterialColors.get(event.getCurrentItem().getType());
         Color color = Main.colorCache.get(player.getName());
         if (color == null) {
           color = dyeColor.getColor();
@@ -38,13 +38,13 @@ public class OnInventoryClick implements Listener {
         return;
       }
 
-      if (event.getCurrentItem().getType().equals(Material.LEATHER_HELMET) || event.getCurrentItem()
-          .getType().equals(Material.LEATHER_CHESTPLATE) || event.getCurrentItem().getType()
-          .equals(Material.LEATHER_LEGGINGS) || event.getCurrentItem().getType()
-          .equals(Material.LEATHER_BOOTS)) {
+      if (event.getCurrentItem().getType() == Material.LEATHER_HELMET
+          || event.getCurrentItem().getType() == Material.LEATHER_CHESTPLATE
+          || event.getCurrentItem().getType() == Material.LEATHER_LEGGINGS
+          || event.getCurrentItem().getType() == Material.LEATHER_BOOTS) {
         event.setCancelled(true);
-        @Nullable ItemStack is = new ItemStack(event.getCurrentItem());
-        ItemMeta mis = is.getItemMeta();
+        final @Nullable ItemStack is = new ItemStack(event.getCurrentItem());
+        final ItemMeta mis = is.getItemMeta();
         mis.setDisplayName(null);
         is.setItemMeta(mis);
         player.getInventory().addItem(is);
@@ -52,7 +52,7 @@ public class OnInventoryClick implements Listener {
         return;
       }
 
-      if (event.getCurrentItem().getType().equals(Material.BARRIER)) {
+      if (event.getCurrentItem().getType() == Material.BARRIER) {
         event.setCancelled(true);
         Main.colorCache.put(player.getName(), null);
         Utils.UpdateColorInventory(player);

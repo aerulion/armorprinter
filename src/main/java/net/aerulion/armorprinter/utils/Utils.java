@@ -28,7 +28,7 @@ public class Utils {
   public static final Map<Material, DyeColor> dyeMaterialColors = createDyeMap();
 
   public static @NotNull Map<Material, DyeColor> createDyeMap() {
-    @NotNull Map<Material, DyeColor> dyeMap = new EnumMap<>(Material.class);
+    final @NotNull Map<Material, DyeColor> dyeMap = new EnumMap<>(Material.class);
     dyeMap.put(Material.BLACK_DYE, DyeColor.BLACK);
     dyeMap.put(Material.GRAY_DYE, DyeColor.GRAY);
     dyeMap.put(Material.LIGHT_GRAY_DYE, DyeColor.LIGHT_GRAY);
@@ -48,54 +48,54 @@ public class Utils {
     return dyeMap;
   }
 
-  public static @NotNull Inventory dyeInv(@NotNull Player p) {
+  public static @NotNull Inventory dyeInv(final @NotNull Player p) {
 
-    @NotNull ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
-    @NotNull LeatherArmorMeta mArmor = (LeatherArmorMeta) helmet.getItemMeta();
+    final @NotNull ItemStack helmet = new ItemStack(Material.LEATHER_HELMET);
+    final @NotNull LeatherArmorMeta mArmor = (LeatherArmorMeta) helmet.getItemMeta();
     mArmor.setColor(Main.colorCache.get(p.getName()));
     mArmor.setDisplayName("§e§lClick to add this item to your inventory");
     helmet.setItemMeta(mArmor);
-    @NotNull ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
+    final @NotNull ItemStack chestplate = new ItemStack(Material.LEATHER_CHESTPLATE);
     chestplate.setItemMeta(mArmor);
-    @NotNull ItemStack leggins = new ItemStack(Material.LEATHER_LEGGINGS);
+    final @NotNull ItemStack leggins = new ItemStack(Material.LEATHER_LEGGINGS);
     leggins.setItemMeta(mArmor);
-    @NotNull ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
+    final @NotNull ItemStack boots = new ItemStack(Material.LEATHER_BOOTS);
     boots.setItemMeta(mArmor);
 
-    @NotNull Inventory inventory = Bukkit.createInventory(null, 54,
+    final @NotNull Inventory inventory = Bukkit.createInventory(null, 54,
         " §8§m+---§2§l§o  Armor§8-§2§l§oPrinter  §8§m---+");
 
-    @NotNull ItemStack dye1 = new ItemStack(Material.BLACK_DYE);
+    final @NotNull ItemStack dye1 = new ItemStack(Material.BLACK_DYE);
     inventory.setItem(13, dye1);
-    @NotNull ItemStack dye2 = new ItemStack(Material.GRAY_DYE);
+    final @NotNull ItemStack dye2 = new ItemStack(Material.GRAY_DYE);
     inventory.setItem(14, dye2);
-    @NotNull ItemStack dye3 = new ItemStack(Material.LIGHT_GRAY_DYE);
+    final @NotNull ItemStack dye3 = new ItemStack(Material.LIGHT_GRAY_DYE);
     inventory.setItem(15, dye3);
-    @NotNull ItemStack dye4 = new ItemStack(Material.WHITE_DYE);
+    final @NotNull ItemStack dye4 = new ItemStack(Material.WHITE_DYE);
     inventory.setItem(16, dye4);
-    @NotNull ItemStack dye5 = new ItemStack(Material.RED_DYE);
+    final @NotNull ItemStack dye5 = new ItemStack(Material.RED_DYE);
     inventory.setItem(22, dye5);
-    @NotNull ItemStack dye6 = new ItemStack(Material.ORANGE_DYE);
+    final @NotNull ItemStack dye6 = new ItemStack(Material.ORANGE_DYE);
     inventory.setItem(23, dye6);
-    @NotNull ItemStack dye7 = new ItemStack(Material.YELLOW_DYE);
+    final @NotNull ItemStack dye7 = new ItemStack(Material.YELLOW_DYE);
     inventory.setItem(24, dye7);
-    @NotNull ItemStack dye8 = new ItemStack(Material.LIME_DYE);
+    final @NotNull ItemStack dye8 = new ItemStack(Material.LIME_DYE);
     inventory.setItem(25, dye8);
-    @NotNull ItemStack dye9 = new ItemStack(Material.GREEN_DYE);
+    final @NotNull ItemStack dye9 = new ItemStack(Material.GREEN_DYE);
     inventory.setItem(31, dye9);
-    @NotNull ItemStack dye10 = new ItemStack(Material.CYAN_DYE);
+    final @NotNull ItemStack dye10 = new ItemStack(Material.CYAN_DYE);
     inventory.setItem(32, dye10);
-    @NotNull ItemStack dye11 = new ItemStack(Material.BLUE_DYE);
+    final @NotNull ItemStack dye11 = new ItemStack(Material.BLUE_DYE);
     inventory.setItem(33, dye11);
-    @NotNull ItemStack dye12 = new ItemStack(Material.LIGHT_BLUE_DYE);
+    final @NotNull ItemStack dye12 = new ItemStack(Material.LIGHT_BLUE_DYE);
     inventory.setItem(34, dye12);
-    @NotNull ItemStack dye13 = new ItemStack(Material.PINK_DYE);
+    final @NotNull ItemStack dye13 = new ItemStack(Material.PINK_DYE);
     inventory.setItem(40, dye13);
-    @NotNull ItemStack dye14 = new ItemStack(Material.MAGENTA_DYE);
+    final @NotNull ItemStack dye14 = new ItemStack(Material.MAGENTA_DYE);
     inventory.setItem(41, dye14);
-    @NotNull ItemStack dye15 = new ItemStack(Material.PURPLE_DYE);
+    final @NotNull ItemStack dye15 = new ItemStack(Material.PURPLE_DYE);
     inventory.setItem(42, dye15);
-    @NotNull ItemStack dye16 = new ItemStack(Material.BROWN_DYE);
+    final @NotNull ItemStack dye16 = new ItemStack(Material.BROWN_DYE);
     inventory.setItem(43, dye16);
 
     inventory.setItem(10, helmet);
@@ -103,8 +103,8 @@ public class Utils {
     inventory.setItem(28, leggins);
     inventory.setItem(37, boots);
 
-    @NotNull ItemStack reset = new ItemStack(Material.BARRIER);
-    ItemMeta mReset = reset.getItemMeta();
+    final @NotNull ItemStack reset = new ItemStack(Material.BARRIER);
+    final ItemMeta mReset = reset.getItemMeta();
     mReset.setDisplayName("§e§lReset");
     reset.setItemMeta(mReset);
     inventory.setItem(49, reset);
@@ -112,33 +112,33 @@ public class Utils {
     return inventory;
   }
 
-  public static void UpdateColorInventory(@NotNull Player player) {
-    @NotNull Inventory inventory = player.getOpenInventory().getTopInventory();
-    @Nullable ItemStack helmet = inventory.getItem(10);
-    @NotNull LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) helmet.getItemMeta();
+  public static void UpdateColorInventory(final @NotNull Player player) {
+    final @NotNull Inventory inventory = player.getOpenInventory().getTopInventory();
+    final @Nullable ItemStack helmet = inventory.getItem(10);
+    final @NotNull LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) helmet.getItemMeta();
     leatherArmorMeta.setColor(Main.colorCache.get(player.getName()));
     helmet.setItemMeta(leatherArmorMeta);
-    @Nullable ItemStack chestplate = inventory.getItem(19);
+    final @Nullable ItemStack chestplate = inventory.getItem(19);
     chestplate.setItemMeta(leatherArmorMeta);
-    @Nullable ItemStack leggings = inventory.getItem(28);
+    final @Nullable ItemStack leggings = inventory.getItem(28);
     leggings.setItemMeta(leatherArmorMeta);
-    @Nullable ItemStack boots = inventory.getItem(37);
+    final @Nullable ItemStack boots = inventory.getItem(37);
     boots.setItemMeta(leatherArmorMeta);
     player.updateInventory();
   }
 
-  public static @NotNull ItemStack dyeRandom(@NotNull ItemStack is, int x) {
-    DyeColor @NotNull [] dc = {DyeColor.BLACK, DyeColor.BLUE, DyeColor.BROWN, DyeColor.CYAN,
+  public static @NotNull ItemStack dyeRandom(final @NotNull ItemStack is, final int x) {
+    final DyeColor @NotNull [] dc = {DyeColor.BLACK, DyeColor.BLUE, DyeColor.BROWN, DyeColor.CYAN,
         DyeColor.GRAY, DyeColor.GREEN, DyeColor.LIGHT_BLUE, DyeColor.LIME, DyeColor.MAGENTA,
         DyeColor.ORANGE, DyeColor.PINK, DyeColor.PURPLE, DyeColor.RED, DyeColor.LIGHT_GRAY,
         DyeColor.WHITE, DyeColor.YELLOW};
-    @NotNull LeatherArmorMeta mis = (LeatherArmorMeta) is.getItemMeta();
-    ThreadLocalRandom random = ThreadLocalRandom.current();
+    final @NotNull LeatherArmorMeta mis = (LeatherArmorMeta) is.getItemMeta();
+    final ThreadLocalRandom random = ThreadLocalRandom.current();
     @Nullable Color col = null;
-    int r1 = random.nextInt(x) + 1;
+    final int r1 = random.nextInt(x) + 1;
     for (int i = 0; i < r1; i++) {
-      int r2 = random.nextInt(15);
-      DyeColor color = dc[r2];
+      final int r2 = random.nextInt(15);
+      final DyeColor color = dc[r2];
       if (col == null) {
         col = color.getColor();
       } else {
@@ -150,12 +150,12 @@ public class Utils {
     return is;
   }
 
-  public static @NotNull List<ItemStack> getRandomArmor(int x) {
-    @NotNull List<ItemStack> armor = new ArrayList<>();
-    @NotNull ItemStack helmet = dyeRandom(new ItemStack(Material.LEATHER_HELMET), x);
-    @NotNull ItemStack chestplate = dyeRandom(new ItemStack(Material.LEATHER_CHESTPLATE), x);
-    @NotNull ItemStack leggings = dyeRandom(new ItemStack(Material.LEATHER_LEGGINGS), x);
-    @NotNull ItemStack boots = dyeRandom(new ItemStack(Material.LEATHER_BOOTS), x);
+  public static @NotNull List<ItemStack> getRandomArmor(final int x) {
+    final @NotNull List<ItemStack> armor = new ArrayList<>();
+    final @NotNull ItemStack helmet = dyeRandom(new ItemStack(Material.LEATHER_HELMET), x);
+    final @NotNull ItemStack chestplate = dyeRandom(new ItemStack(Material.LEATHER_CHESTPLATE), x);
+    final @NotNull ItemStack leggings = dyeRandom(new ItemStack(Material.LEATHER_LEGGINGS), x);
+    final @NotNull ItemStack boots = dyeRandom(new ItemStack(Material.LEATHER_BOOTS), x);
     armor.add(helmet);
     armor.add(chestplate);
     armor.add(leggings);
@@ -163,8 +163,8 @@ public class Utils {
     return armor;
   }
 
-  public static @NotNull ArmorStand summonArmorStand(@NotNull Player player) {
-    @NotNull ArmorStand armorStand = (ArmorStand) player.getLocation().getWorld()
+  public static @NotNull ArmorStand summonArmorStand(final @NotNull Player player) {
+    final @NotNull ArmorStand armorStand = (ArmorStand) player.getLocation().getWorld()
         .spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
     armorStand.setArms(true);
     armorStand.setBasePlate(false);
@@ -173,13 +173,13 @@ public class Utils {
     return armorStand;
   }
 
-  public static void equipPrintedArmorStand(@NotNull ArmorStand armorStand,
-      @NotNull String playerName, int quality) throws IOException {
-    @NotNull ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-    @NotNull SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
+  public static void equipPrintedArmorStand(final @NotNull ArmorStand armorStand,
+      final @NotNull String playerName, final int quality) throws IOException {
+    final @NotNull ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+    final @NotNull SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
     skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(playerName));
     skull.setItemMeta(skullMeta);
-    ItemStack @NotNull [] items = ColorUtils.getItems(playerName, quality);
+    final ItemStack @NotNull [] items = ColorUtils.getItems(playerName, quality);
     Bukkit.getScheduler().runTask(Main.plugin, () -> {
       armorStand.getEquipment().setHelmet(skull);
       armorStand.getEquipment().setChestplate(items[0]);

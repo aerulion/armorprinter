@@ -14,18 +14,17 @@ import org.jetbrains.annotations.NotNull;
 public class CMD_armorprinter implements CommandExecutor, TabCompleter {
 
   @Override
-  public boolean onCommand(CommandSender commandSender, Command command, String label,
-      String[] args) {
+  public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command command,
+      final @NotNull String label, final String[] args) {
 
-    if (!(commandSender instanceof @NotNull Player player)) {
-      commandSender.sendMessage(
+    if (!(sender instanceof @NotNull Player player)) {
+      sender.sendMessage(
           "§7[§e§lArmorPrinter§7] §cDieser Befehl kann nur als Spieler ausgeführt werden.");
       return true;
     }
 
     if (!player.hasPermission("armorprinter.armorprinter")) {
-      commandSender.sendMessage(
-          "§7[§e§lArmorPrinter§7] §cDu hast keine Rechte diesen Befehl zu nutzen.");
+      sender.sendMessage("§7[§e§lArmorPrinter§7] §cDu hast keine Rechte diesen Befehl zu nutzen.");
       return true;
     }
 
@@ -38,8 +37,8 @@ public class CMD_armorprinter implements CommandExecutor, TabCompleter {
   }
 
   @Override
-  public List<String> onTabComplete(CommandSender commandSender, Command command, String label,
-      String[] args) {
+  public List<String> onTabComplete(final @NotNull CommandSender sender,
+      final @NotNull Command command, final @NotNull String alias, final String[] args) {
     return Collections.emptyList();
   }
 }

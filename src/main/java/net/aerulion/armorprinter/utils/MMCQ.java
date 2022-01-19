@@ -66,7 +66,7 @@ public class MMCQ {
    * @param b the blue value
    * @return the color index
    */
-  static int getColorIndex(int r, int g, int b) {
+  static int getColorIndex(final int r, final int g, final int b) {
     return (r << (2 * SIGBITS)) + (g << SIGBITS) + b;
   }
 
@@ -74,14 +74,14 @@ public class MMCQ {
    * Histo (1-d array, giving the number of pixels in each quantized region of color space), or null
    * on error.
    */
-  private static int @NotNull [] getHisto(int @NotNull [] @NotNull [] pixels) {
-    int @NotNull [] histo = new int[HISTOSIZE];
+  private static int @NotNull [] getHisto(final int @NotNull [] @NotNull [] pixels) {
+    final int @NotNull [] histo = new int[HISTOSIZE];
     int index;
     int rval;
     int gval;
     int bval;
 
-    for (int[] pixel : pixels) {
+    for (final int[] pixel : pixels) {
       rval = pixel[0] >> RSHIFT;
       gval = pixel[1] >> RSHIFT;
       bval = pixel[2] >> RSHIFT;
@@ -91,7 +91,8 @@ public class MMCQ {
     return histo;
   }
 
-  private static @NotNull VBox vboxFromPixels(int @NotNull [] @NotNull [] pixels, int[] histo) {
+  private static @NotNull VBox vboxFromPixels(final int @NotNull [] @NotNull [] pixels,
+      final int[] histo) {
     int rmin = 1000000;
     int rmax = 0;
     int gmin = 1000000;
@@ -104,7 +105,7 @@ public class MMCQ {
     int bval;
 
     // find min/max
-    for (int[] pixel : pixels) {
+    for (final int[] pixel : pixels) {
       rval = pixel[0] >> RSHIFT;
       gval = pixel[1] >> RSHIFT;
       bval = pixel[2] >> RSHIFT;
@@ -131,7 +132,7 @@ public class MMCQ {
     return new VBox(rmin, rmax, gmin, gmax, bmin, bmax, histo);
   }
 
-  private static VBox @Nullable [] medianCutApply(int[] histo, @NotNull VBox vbox) {
+  private static VBox @Nullable [] medianCutApply(final int[] histo, final @NotNull VBox vbox) {
     if (vbox.count(false) == 0) {
       return null;
     }
@@ -141,16 +142,16 @@ public class MMCQ {
       return new VBox[]{vbox.clone(), null};
     }
 
-    int rw = vbox.r2 - vbox.r1 + 1;
-    int gw = vbox.g2 - vbox.g1 + 1;
-    int bw = vbox.b2 - vbox.b1 + 1;
-    int maxw = Math.max(Math.max(rw, gw), bw);
+    final int rw = vbox.r2 - vbox.r1 + 1;
+    final int gw = vbox.g2 - vbox.g1 + 1;
+    final int bw = vbox.b2 - vbox.b1 + 1;
+    final int maxw = Math.max(Math.max(rw, gw), bw);
 
     // Find the partial sum arrays along the selected axis.
     int total = 0;
-    int @NotNull [] partialsum = new int[VBOX_LENGTH];
+    final int @NotNull [] partialsum = new int[VBOX_LENGTH];
     Arrays.fill(partialsum, -1); // -1 = not set / 0 = 0
-    int @NotNull [] lookaheadsum = new int[VBOX_LENGTH];
+    final int @NotNull [] lookaheadsum = new int[VBOX_LENGTH];
     Arrays.fill(lookaheadsum, -1); // -1 = not set / 0 = 0
     int i, j, k, sum, index;
 
@@ -205,10 +206,10 @@ public class MMCQ {
             : doCut('b', vbox, partialsum, lookaheadsum, total);
   }
 
-  private static VBox @NotNull [] doCut(char color, @NotNull VBox vbox, int[] partialsum,
-      int[] lookaheadsum, int total) {
-    int vboxDim1;
-    int vboxDim2;
+  private static VBox @NotNull [] doCut(final char color, final @NotNull VBox vbox,
+      final int[] partialsum, final int[] lookaheadsum, final int total) {
+    final int vboxDim1;
+    final int vboxDim2;
 
     if (color == 'r') {
       vboxDim1 = vbox.r1;
@@ -222,10 +223,10 @@ public class MMCQ {
       vboxDim2 = vbox.b2;
     }
 
-    int left;
-    int right;
-    @Nullable VBox vbox1;
-    @Nullable VBox vbox2;
+    final int left;
+    final int right;
+    final @Nullable VBox vbox1;
+    final @Nullable VBox vbox2;
     int d2;
     int count2;
 
@@ -274,21 +275,22 @@ public class MMCQ {
     throw new RuntimeException("VBox can't be cut");
   }
 
-  public static @Nullable CMap quantize(int @NotNull [] @NotNull [] pixels, int maxColors) {
+  public static @Nullable CMap quantize(final int @NotNull [] @NotNull [] pixels,
+      final int maxColors) {
     // short-circuit
     if (pixels.length == 0 || maxColors < 2 || maxColors > 256) {
       return null;
     }
 
-    int @NotNull [] histo = getHisto(pixels);
+    final int @NotNull [] histo = getHisto(pixels);
 
     // get the beginning vbox from the colors
-    @NotNull VBox vbox = vboxFromPixels(pixels, histo);
-    @NotNull ArrayList<VBox> pq = new ArrayList<>();
+    final @NotNull VBox vbox = vboxFromPixels(pixels, histo);
+    final @NotNull ArrayList<VBox> pq = new ArrayList<>();
     pq.add(vbox);
 
     // Round up to have the same behaviour as in JavaScript
-    int target = (int) Math.ceil(FRACT_BY_POPULATION * maxColors);
+    final int target = (int) Math.ceil(FRACT_BY_POPULATION * maxColors);
 
     // first set of colors, sorted by population
     iter(pq, COMPARATOR_COUNT, target, histo);
@@ -306,8 +308,8 @@ public class MMCQ {
     Collections.reverse(pq);
 
     // calculate the actual colors
-    @NotNull CMap cmap = new CMap();
-    for (VBox vb : pq) {
+    final @NotNull CMap cmap = new CMap();
+    for (final VBox vb : pq) {
       cmap.push(vb);
     }
 
@@ -317,8 +319,8 @@ public class MMCQ {
   /**
    * Inner function to do the iteration.
    */
-  private static void iter(@NotNull List<VBox> lh, Comparator<VBox> comparator, int target,
-      int[] histo) {
+  private static void iter(final @NotNull List<VBox> lh, final Comparator<VBox> comparator,
+      final int target, final int[] histo) {
     int niters = 0;
     VBox vbox;
 
@@ -332,14 +334,14 @@ public class MMCQ {
       lh.remove(lh.size() - 1);
 
       // do the cut
-      VBox @Nullable [] vboxes = medianCutApply(histo, vbox);
+      final VBox @Nullable [] vboxes = medianCutApply(histo, vbox);
 
       if (vboxes == null) {
         throw new IllegalStateException("vboxes not defined; shouldn't happen!");
       }
 
-      VBox vbox1 = vboxes[0];
-      VBox vbox2 = vboxes[1];
+      final VBox vbox1 = vboxes[0];
+      final VBox vbox2 = vboxes[1];
 
       if (vbox1 == null) {
         throw new IllegalStateException("vbox1 not defined; shouldn't happen!");
@@ -374,7 +376,8 @@ public class MMCQ {
     private Integer _volume;
     private Integer _count;
 
-    public VBox(int r1, int r2, int g1, int g2, int b1, int b2, int[] histo) {
+    public VBox(final int r1, final int r2, final int g1, final int g2, final int b1, final int b2,
+        final int[] histo) {
       this.r1 = r1;
       this.r2 = r2;
       this.g1 = g1;
@@ -385,7 +388,7 @@ public class MMCQ {
       this.histo = histo;
     }
 
-    public int volume(boolean force) {
+    public int volume(final boolean force) {
       if (_volume == null || force) {
         _volume = ((r2 - r1 + 1) * (g2 - g1 + 1) * (b2 - b1 + 1));
       }
@@ -393,7 +396,7 @@ public class MMCQ {
       return _volume;
     }
 
-    public int count(boolean force) {
+    public int count(final boolean force) {
       if (_count == null || force) {
         int npix = 0;
         int i;
@@ -427,7 +430,7 @@ public class MMCQ {
           + " / b2: " + b2;
     }
 
-    public int[] avg(boolean force) {
+    public int[] avg(final boolean force) {
       if (_avg == null || force) {
         int ntot = 0;
 
@@ -474,13 +477,13 @@ public class MMCQ {
 
     public final List<VBox> vboxes = new ArrayList<>();
 
-    public void push(VBox box) {
+    public void push(final VBox box) {
       vboxes.add(box);
     }
 
     public int @NotNull [] @NotNull [] palette() {
-      int numVBoxes = vboxes.size();
-      int @NotNull [] @NotNull [] palette = new int[numVBoxes][];
+      final int numVBoxes = vboxes.size();
+      final int @NotNull [] @NotNull [] palette = new int[numVBoxes][];
       for (int i = 0; i < numVBoxes; i++) {
         palette[i] = vboxes.get(i).avg(false);
       }

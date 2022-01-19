@@ -35,26 +35,27 @@ public final class ColorThief {
   private ColorThief() {
   }
 
-  public static int @Nullable [] getColor(@NotNull BufferedImage sourceImage, int quality) {
-    int @Nullable [] @Nullable [] palette = getPalette(sourceImage, 2, quality);
+  public static int @Nullable [] getColor(final @NotNull BufferedImage sourceImage,
+      final int quality) {
+    final int @Nullable [] @Nullable [] palette = getPalette(sourceImage, 2, quality);
     if (palette == null) {
       return null;
     }
     return palette[0];
   }
 
-  public static int @Nullable [] @Nullable [] getPalette(@NotNull BufferedImage sourceImage,
-      int colorCount, int quality) {
-    @Nullable CMap cmap = getColorMap(sourceImage, colorCount, quality);
+  public static int @Nullable [] @Nullable [] getPalette(final @NotNull BufferedImage sourceImage,
+      final int colorCount, final int quality) {
+    final @Nullable CMap cmap = getColorMap(sourceImage, colorCount, quality);
     if (cmap == null) {
       return null;
     }
     return cmap.palette();
   }
 
-  public static @Nullable CMap getColorMap(@NotNull BufferedImage sourceImage, int colorCount,
-      int quality) {
-    boolean ignoreWhite = DEFAULT_IGNORE_WHITE;
+  public static @Nullable CMap getColorMap(final @NotNull BufferedImage sourceImage,
+      final int colorCount, final int quality) {
+    final boolean ignoreWhite = DEFAULT_IGNORE_WHITE;
     if (colorCount < 2 || colorCount > 256) {
       throw new IllegalArgumentException("Specified colorCount must be between 2 and 256.");
     }
@@ -62,7 +63,7 @@ public final class ColorThief {
       throw new IllegalArgumentException("Specified quality should be greater then 0.");
     }
 
-    int[][] pixelArray = switch (sourceImage.getType()) {
+    final int @NotNull [] @NotNull [] pixelArray = switch (sourceImage.getType()) {
       case BufferedImage.TYPE_3BYTE_BGR, BufferedImage.TYPE_4BYTE_ABGR -> getPixelsFast(sourceImage,
           quality, ignoreWhite);
       default -> getPixelsSlow(sourceImage, quality, ignoreWhite);
@@ -70,25 +71,26 @@ public final class ColorThief {
 
     // Send array to quantize function which clusters values using median
     // cut algorithm
-    @Nullable CMap cmap = MMCQ.quantize(pixelArray, colorCount);
+    final @Nullable CMap cmap = MMCQ.quantize(pixelArray, colorCount);
     return cmap;
   }
 
-  private static int @NotNull [] @NotNull [] getPixelsFast(@NotNull BufferedImage sourceImage,
-      int quality, boolean ignoreWhite) {
-    @NotNull DataBufferByte imageData = (DataBufferByte) sourceImage.getRaster().getDataBuffer();
-    byte[] pixels = imageData.getData();
-    int pixelCount = sourceImage.getWidth() * sourceImage.getHeight();
+  private static int @NotNull [] @NotNull [] getPixelsFast(final @NotNull BufferedImage sourceImage,
+      final int quality, final boolean ignoreWhite) {
+    final @NotNull DataBufferByte imageData = (DataBufferByte) sourceImage.getRaster()
+        .getDataBuffer();
+    final byte[] pixels = imageData.getData();
+    final int pixelCount = sourceImage.getWidth() * sourceImage.getHeight();
 
-    int colorDepth;
-    int type = sourceImage.getType();
+    final int colorDepth;
+    final int type = sourceImage.getType();
     colorDepth = switch (type) {
       case BufferedImage.TYPE_3BYTE_BGR -> 3;
       case BufferedImage.TYPE_4BYTE_ABGR -> 4;
       default -> throw new IllegalArgumentException("Unhandled type: " + type);
     };
 
-    int expectedDataLength = pixelCount * colorDepth;
+    final int expectedDataLength = pixelCount * colorDepth;
     if (expectedDataLength != pixels.length) {
       throw new IllegalArgumentException(
           "(expectedDataLength = " + expectedDataLength + ") != (pixels.length = " + pixels.length
@@ -101,10 +103,10 @@ public final class ColorThief {
     // numRegardedPixels must be rounded up to avoid an
     // ArrayIndexOutOfBoundsException if all
     // pixels are good.
-    int numRegardedPixels = (pixelCount + quality - 1) / quality;
+    final int numRegardedPixels = (pixelCount + quality - 1) / quality;
 
     int numUsedPixels = 0;
-    int @NotNull [] @NotNull [] pixelArray = new int[numRegardedPixels][];
+    final int @NotNull [] @NotNull [] pixelArray = new int[numRegardedPixels][];
     int offset;
     int r;
     int g;
@@ -152,29 +154,29 @@ public final class ColorThief {
     return Arrays.copyOfRange(pixelArray, 0, numUsedPixels);
   }
 
-  private static int @NotNull [] @NotNull [] getPixelsSlow(@NotNull BufferedImage sourceImage,
-      int quality, boolean ignoreWhite) {
-    int width = sourceImage.getWidth();
-    int height = sourceImage.getHeight();
+  private static int @NotNull [] @NotNull [] getPixelsSlow(final @NotNull BufferedImage sourceImage,
+      final int quality, final boolean ignoreWhite) {
+    final int width = sourceImage.getWidth();
+    final int height = sourceImage.getHeight();
 
-    int pixelCount = width * height;
+    final int pixelCount = width * height;
 
     // numRegardedPixels must be rounded up to avoid an
     // ArrayIndexOutOfBoundsException if all
     // pixels are good.
-    int numRegardedPixels = (pixelCount + quality - 1) / quality;
+    final int numRegardedPixels = (pixelCount + quality - 1) / quality;
 
     int numUsedPixels = 0;
 
-    int @NotNull [] @NotNull [] res = new int[numRegardedPixels][];
+    final int @NotNull [] @NotNull [] res = new int[numRegardedPixels][];
     int r;
     int g;
     int b;
 
     for (int i = 0; i < pixelCount; i += quality) {
-      int row = i / width;
-      int col = i % width;
-      int rgb = sourceImage.getRGB(col, row);
+      final int row = i / width;
+      final int col = i % width;
+      final int rgb = sourceImage.getRGB(col, row);
       r = (rgb >> 16) & 0xFF;
       g = (rgb >> 8) & 0xFF;
       b = (rgb) & 0xFF;

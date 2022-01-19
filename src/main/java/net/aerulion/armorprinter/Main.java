@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Main extends JavaPlugin {
 
-  public static @NotNull Map<String, Color> colorCache = new HashMap<>();
+  public static final @NotNull Map<String, Color> colorCache = new HashMap<>();
   public static Main plugin;
 
   @Override

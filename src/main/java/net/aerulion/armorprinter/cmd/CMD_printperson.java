@@ -17,8 +17,8 @@ import org.jetbrains.annotations.Nullable;
 public class CMD_printperson implements CommandExecutor, TabCompleter {
 
   @Override
-  public boolean onCommand(CommandSender sender, Command cmd, String label,
-      String @NotNull [] args) {
+  public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command command,
+      final @NotNull String label, final String @NotNull [] args) {
     if (!(sender instanceof @NotNull Player player)) {
       sender.sendMessage(
           "§7[§e§lArmorPrinter§7] §cDieser Befehl kann nur als Spieler ausgeführt werden.");
@@ -30,8 +30,8 @@ public class CMD_printperson implements CommandExecutor, TabCompleter {
       return true;
     }
 
-    String playerName;
-    int quality;
+    final String playerName;
+    final int quality;
 
     if (args.length == 1) {
       playerName = args[0];
@@ -45,7 +45,7 @@ public class CMD_printperson implements CommandExecutor, TabCompleter {
           sender.sendMessage("§7[§e§lArmorPrinter§7] §cDie Zahl muss zwischen 1 und 10 liegen.");
           return true;
         }
-      } catch (NumberFormatException e) {
+      } catch (final NumberFormatException e) {
         sender.sendMessage("§7[§e§lArmorPrinter§7] §cKeine gültige Zahl angegeben.");
         return true;
       }
@@ -56,13 +56,13 @@ public class CMD_printperson implements CommandExecutor, TabCompleter {
       return true;
     }
 
-    @NotNull ArmorStand armorStand = Utils.summonArmorStand(player);
+    final @NotNull ArmorStand armorStand = Utils.summonArmorStand(player);
     Bukkit.getScheduler().runTaskAsynchronously(Main.plugin, () -> {
       try {
         Utils.equipPrintedArmorStand(armorStand, playerName, quality);
         player.sendMessage(
             "§7[§e§lArmorPrinter§7] §e§o" + args[0] + " §awurde als ArmorStand gespawnt.");
-      } catch (IOException e) {
+      } catch (final IOException e) {
         player.sendMessage(
             "§7[§e§lArmorPrinter§7] §cFehler: Der Skin konnte nicht geladen werden.");
       }
@@ -72,8 +72,8 @@ public class CMD_printperson implements CommandExecutor, TabCompleter {
   }
 
   @Override
-  public @Nullable List<String> onTabComplete(CommandSender sender, Command cmd, String label,
-      String @NotNull [] args) {
+  public @Nullable List<String> onTabComplete(final @NotNull CommandSender sender,
+      final @NotNull Command command, final @NotNull String alias, final String @NotNull [] args) {
     if (args.length == 1) {
       return null;
     } else if (args.length == 2) {

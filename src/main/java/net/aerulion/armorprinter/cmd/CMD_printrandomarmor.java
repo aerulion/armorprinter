@@ -13,8 +13,8 @@ import org.jetbrains.annotations.NotNull;
 public class CMD_printrandomarmor implements CommandExecutor, TabCompleter {
 
   @Override
-  public boolean onCommand(CommandSender sender, Command cmd, String label,
-      String @NotNull [] args) {
+  public boolean onCommand(final @NotNull CommandSender sender, final @NotNull Command command,
+      final @NotNull String label, final String @NotNull [] args) {
 
     if (!(sender instanceof @NotNull Player player)) {
       sender.sendMessage(
@@ -26,7 +26,7 @@ public class CMD_printrandomarmor implements CommandExecutor, TabCompleter {
       sender.sendMessage("§7[§e§lArmorPrinter§7] §cDu hast keine Rechte diesen Befehl zu nutzen.");
       return true;
     }
-    int x;
+    final int x;
 
     if (args.length != 1) {
       sender.sendMessage(
@@ -35,7 +35,7 @@ public class CMD_printrandomarmor implements CommandExecutor, TabCompleter {
     }
     try {
       x = Integer.parseInt(args[0]);
-    } catch (NumberFormatException e) {
+    } catch (final NumberFormatException e) {
       sender.sendMessage("§7[§e§lArmorPrinter§7] §cKeine gültige Zahl.");
       return true;
     }
@@ -45,7 +45,7 @@ public class CMD_printrandomarmor implements CommandExecutor, TabCompleter {
       return true;
     }
 
-    for (ItemStack is : Utils.getRandomArmor(x)) {
+    for (final ItemStack is : Utils.getRandomArmor(x)) {
       player.getInventory().addItem(is);
     }
     sender.sendMessage(
@@ -55,8 +55,8 @@ public class CMD_printrandomarmor implements CommandExecutor, TabCompleter {
   }
 
   @Override
-  public List<String> onTabComplete(CommandSender sender, Command cmd, String label,
-      String @NotNull [] args) {
+  public List<String> onTabComplete(final @NotNull CommandSender sender,
+      final @NotNull Command command, final @NotNull String alias, final String @NotNull [] args) {
     if (args.length == 1) {
       return List.of("<AnzahlAnFärbungen>");
     }

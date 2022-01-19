@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class PlayerQuitListener implements Listener {
 
   @EventHandler
-  public void onPlayerQuit(@NotNull PlayerQuitEvent e) {
+  public void onPlayerQuit(final @NotNull PlayerQuitEvent e) {
     Main.colorCache.remove(e.getPlayer().getName());
   }
 }
